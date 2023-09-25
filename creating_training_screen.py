@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
 from kivy.uix.textinput import TextInput
 
@@ -15,9 +16,10 @@ class CreatingTrainingScreen(Screen):
         self.entrys = []
         self.create_start_forms()
         self.back_button = GoBackButton(on_release = self.go_back)
-        self.add_exercisse_button = Button
+        self.add_exercisse_button = AddExerciseButton(on_release = self.add_exercise)
         
         self.add_widget(self.back_button)
+        self.add_widget(self.add_exercisse_button)
         
     '''
     События кнопок
@@ -28,8 +30,26 @@ class CreatingTrainingScreen(Screen):
         screen_manager.current = "Главный экран"
     
     def add_exercise(self, instance):
-        print(self.entrys)
-    
+        print('len =', len(self.entrys))
+        print(self.entrys[0].text)
+        print(type(self.entrys[0].text))
+        print(len(self.entrys[0].text))
+        print('here')
+        print('here')
+        print('here')
+        print('here')
+        for entry in self.entrys:
+            if not entry.text.strip() == "":        
+                trainings_manager = App.get_running_app().trainings_manager
+                name = self.entrys[0].text
+                exercise = [self.entrys[1], self.entrys[2], self.entrys[3]]
+                trainings_manager.add_training(name, exercise)
+                
+                popup = TrainingPopup('Тренировка/упражнение добавлено')
+                popup.open()
+            else:
+                popup = TrainingPopup('Пустое поле')
+                popup.open()
     '''
     Прочее
     '''
@@ -51,3 +71,27 @@ class TrainEntry(TextInput):
         super(TrainEntry, self).__init__(**kwargs)
         self.font_size = 12
         self.size_hint = (None, None)
+
+class AddExerciseButton(Button):
+    def __init__(self, **kwargs):
+        super(AddExerciseButton, self).__init__(**kwargs)
+        self.text = "+"
+        self.font_size = 12
+        self.background_color = [1, 1, 1, 1]
+        self.size_hint = (None, None)
+        self.size = (60, 25)
+        self.pos_hint = {"center_x": 0.5, "center_y": 0.46}
+        
+class TrainingPopup(Popup):
+    def __init__(self, message, **kwargs):
+        super(TrainingPopup, self).__init__(**kwargs)
+        
+        layout = BoxLayout(orientation='vertical')
+        label = Label(text=message)
+        button = Button(text='Ок', size_hint=(1, 0.2))
+        button.bind(on_release=self.dismiss)
+        
+        layout.add_widget(label)
+        layout.add_widget(button)
+        
+        self.content = layout
