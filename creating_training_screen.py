@@ -30,26 +30,23 @@ class CreatingTrainingScreen(Screen):
         screen_manager.current = "Главный экран"
     
     def add_exercise(self, instance):
-        print('len =', len(self.entrys))
-        print(self.entrys[0].text)
-        print(type(self.entrys[0].text))
-        print(len(self.entrys[0].text))
-        print('here')
-        print('here')
-        print('here')
-        print('here')
+        exercises = []
         for entry in self.entrys:
+            if entry == self.entrys[0]:
+                continue
             if not entry.text.strip() == "":        
                 trainings_manager = App.get_running_app().trainings_manager
                 name = self.entrys[0].text
-                exercise = [self.entrys[1], self.entrys[2], self.entrys[3]]
-                trainings_manager.add_training(name, exercise)
+                exercise = entry.text
+                exercises.append(exercise)
                 
                 popup = TrainingPopup('Тренировка/упражнение добавлено')
                 popup.open()
             else:
                 popup = TrainingPopup('Пустое поле')
                 popup.open()
+        trainings_manager.add_training(name, exercises)
+        print(trainings_manager.trainings)
     '''
     Прочее
     '''

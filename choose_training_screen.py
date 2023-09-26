@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
+from kivy.uix.recycleview import RecycleView
 
 from go_back_button import GoBackButton
 
@@ -17,3 +18,8 @@ class ChooseTrainingScreen(Screen):
         screen_manager = App.get_running_app().root
         screen_manager.transition.direction = 'right'
         screen_manager.current = "Главный экран"
+
+class TrainingList(RecycleView):
+    def __init__(self, trainings, **kwargs):
+        super(TrainingList, self).__init__(**kwargs)
+        self.data = trainings

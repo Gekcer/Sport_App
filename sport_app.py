@@ -12,6 +12,7 @@ class SportApp(App):
         self.trainings_manager = TrainingsManager()
         
         self.prepare_screens()
+        print(self.trainings_manager.trainings)
         return self.screen_manager
     
     def prepare_screens(self):
